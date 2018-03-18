@@ -1,0 +1,5 @@
+Installation:
+
+   1. pip install ThePirateBay //Library to get metadata from ThePirateBay
+   2. //Copy fixes in the folder "libEdits" to /tpb/ python lib
+   

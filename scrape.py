@@ -8,26 +8,26 @@ import glob
 
 def main():
     t = TPB('https://thepiratebay.org')
-
-    search = t.search('Stranger Things', category=CATEGORIES.VIDEO.TV_SHOWS)
-
-    numberOfResults = 0
-
     createTorrentDirectory()
+    movieFile = open("movieList.txt", "r")
+    totRes = 0
+    totMovies = 0
+    for line in movieFile.readlines():
+        print "MOVIE - " + line.split("\n")[0]
+        search = t.search(line.split("\n")[0])
+        for torrent in search:
+            #saveTorrentInDir("./Torrents", torrent)
+            print "\t" + torrent.title
+            totRes += 1
+        totMovies += 1
 
-    for torrent in search:
-        saveTorrentInDir("./Torrents", torrent)
-        #torrent.print_torrent()
-        numberOfResults += 1
-
-    print(numberOfResults)
-
+    print "Total Movies = " + str(totMovies)
+    print "TotalRes = " + str(totRes)
 
 def saveTorrentInDir(dirName, torrentMetadata):
     convString = "python Magnet_To_Torrent2.py -m \"" + \
         torrentMetadata.magnet_link + "\" -o " + \
         dirName + "/" + torrentMetadata.title + ".torrent"
-    print convString
     os.system(convString)
 
 

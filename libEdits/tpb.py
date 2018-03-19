@@ -58,7 +58,7 @@ class List(object):
         Request URL and parse response. Yield a ``Torrent`` for every torrent
         on page.
         """
-        request = urlopen(urllib.request.Request(str(self.url), headers=headers()))
+        request = urlopen(Request(str(self.url), headers=headers()))
         document = html.parse(request)
         root = document.getroot()
         items = [self._build_torrent(row) for row in
@@ -321,7 +321,7 @@ class Torrent(object):
     @property
     def info(self):
         if self._info is None:
-            request = urlopen(urllib.request.Request(str(self.url), headers=headers()))
+            request = urlopen(Request(str(self.url), headers=headers()))
             document = html.parse(request)
             root = document.getroot()
             info = root.cssselect('#details .nfo pre')[0].text_content()
@@ -333,7 +333,7 @@ class Torrent(object):
         if not self._files:
             path = '/ajax_details_filelist.php?id={id}'.format(id=self.id)
             url = self.url.path(path)
-            request = urlopen(urllib.request.Request(str(url), headers=headers()))
+            request = urlopen(Request(str(url), headers=headers()))
             document = html.parse(request)
             root = document.getroot()
             rows = root.findall('.//tr')

@@ -22,7 +22,7 @@ def print_torrent_progress(curr_stat):
 
 def ip_to_location(ip_addr):
     ip_loc = requests.get('http://ipinfo.io/' + ip_addr).json()
-    print ip_loc
+    #print ip_loc
 
 def dns_resolve(hostname):
     try:
@@ -65,7 +65,7 @@ def get_torrent_block(torrent_name):
     #    url = url.replace("/", "")
     #    url = url.split(":")[1]
     #    dns_resolve(url)
-    
+
 
     params = {
         'save_path': '../Completed/' + torrent_name.split(".torrent")[0],
@@ -75,17 +75,17 @@ def get_torrent_block(torrent_name):
         'duplicate_is_error': True,
         'ti': info
     }
-    
+
     handle = ses.add_torrent(params)
     #make sure we get the alerts for when a piece finished
     ses.set_alert_mask(lt.alert.category_t.progress_notification)
 
-    #needs to be set 
+    #needs to be set
     stat = handle.status()
     while (not stat.is_seeding):
         #update status
         stat = handle.status()
-        
+
         #get all current peer info
         peer_info = handle.get_peer_info()
         process_current_peers(peer_info)
@@ -94,11 +94,11 @@ def get_torrent_block(torrent_name):
         #ses.wait_for_alert(500)
         #alert_list = ses.pop_alerts()
         #process_alerts(alert_list, info)
-        
+
 
         print_torrent_progress(stat)
         time.sleep(1)
-   
+
     #finally, remove the torrent once starting to seed
     ses.remove_torrent(handle)
 

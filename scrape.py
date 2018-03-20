@@ -2,6 +2,9 @@ from tpb import TPB
 from tpb import CATEGORIES, ORDERS
 import os
 import glob
+import re
+import subprocess
+from threading import Timer
 
 
 
@@ -16,7 +19,7 @@ def main():
         print "MOVIE - " + line.split("\n")[0]
         search = t.search(line.split("\n")[0])
         for torrent in search:
-            #saveTorrentInDir("./Torrents", torrent)
+            saveTorrentInDir("./Torrents", torrent)
             print "\t" + torrent.title
             totRes += 1
         totMovies += 1
@@ -25,10 +28,21 @@ def main():
     print "TotalRes = " + str(totRes)
 
 def saveTorrentInDir(dirName, torrentMetadata):
+    x = 20
+    delay = 1.0
+    my_timeout = int(x / delay)
     convString = "python Magnet_To_Torrent2.py -m \"" + \
         torrentMetadata.magnet_link + "\" -o " + \
-        dirName + "/" + torrentMetadata.title + ".torrent"
-    os.system(convString)
+        dirName + "/" + re.sub('[!@#$ ()]', '', torrentMetadata.title) + ".torrent"
+    print convString
+    p = subprocess.Popen(convString, shell=True)
+    timer1 = Timer(my_timeout, p.kill)
+    timer1.start()
+    p.communicate()
+    if timer1.is_alive():
+        timer1.cancel()
+        return
+    print("TIMEDOUT THE PROCESS")
 
 
 def createTorrentDirectory():

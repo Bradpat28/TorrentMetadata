@@ -6,3 +6,5 @@ Installation:
    1. pip install ThePirateBay
    2. Copy fixes in the folder "libEdits" to /tpb/ python lib
    3. (mac) brew install libtorrent-rasterbar --with-python
+   4. pip install torrent_parser
+   5. pip install requests

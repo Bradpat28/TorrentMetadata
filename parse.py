@@ -23,15 +23,16 @@ def ip_to_location(ip_addr):
     print 'http://ipinfo.io/' + ip_addr + "/json"
     #ip_loc = requests.get('http://ipinfo.io/' + ip_addr + "/json").json()
     #NOT WORKING ON MY MACHINE!
-    data = {"ip": "8.8.8.8",
-          "hostname": "google-public-dns-a.google.com",
-          "loc": "37.385999999999996,-122.0838",
-          "org": "AS15169 Google Inc.",
-          "city": "Mountain View",
-          "region": "California",
-          "country": "US",
-          "phone": 650}
+    data = {'ip': '8.8.8.8',
+          "hostname": 'google-public-dns-a.google.com',
+          'loc': '37.385999999999996,-122.0838',
+          'org': "AS15169 Google Inc.",
+          'city': 'Mountain View',
+          'region': 'California',
+          'country': 'US',
+          'phone': 650}
     json_data = json.dumps(data)
+    #return json_data
     return json_data
 
 def dns_resolve(hostname):
@@ -58,10 +59,6 @@ def analyze_data(torrent_data, torrentName):
                     #print loc
                     tInfo = TrackerInfoClass(str, loc, getPeerData(torrentName))
                     trackObjList.append(tInfo)
-
-
-
-
             #print tracker_list
     return trackObjList
 
@@ -91,7 +88,17 @@ def getPeerData(torrentFileName):
                 jsonData = ip_to_location(search_ip)
                 if jsonData != None:
                     print "Saved Data"
-                    peerList.append(PeerInfoClass(jsonData))
+                    peerClass = PeerInfoClass()
+                    info = json.loads(jsonData)
+                    peerClass.jsonData = jsonData
+                    peerClass.loc = info['loc']
+                    peerClass.country = info['country']
+                    peerClass.org = info['org']
+                    peerClass.ip = search_ip
+                    peerClass.region = info['region']
+                    peerClass.hostname = info['hostname']
+                    peerClass.city = info['city']
+                    peerList.append(peerClass)
                     ipList.append(peer.ip[0])
         sys.stdout.flush()
         timeCount += 1
@@ -120,6 +127,7 @@ def main():
     tempDir = glob.glob("./data")
     if len(tempDir) == 0:
         os.mkdir("./data")
+    os.chdir("./data")
 
     for x in torrentClassList:
         x.printSelf()

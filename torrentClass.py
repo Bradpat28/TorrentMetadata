@@ -19,19 +19,34 @@ class TrackerInfoClass:
         self.hostName = hostName
         self.jsonData = jsonData
         self.peers = peers
+        self
 
     def printSelf(self):
         print "\thostname = " + self.hostName
-        for x in peers:
+        for x in self.peers:
             x.printSelf()
 
 
 
 class PeerInfoClass:
-    def __init__(self, jsonData):
-        self.jsonData = jsonData
+    def __init__(self):
+        self.jsonData = None
+        self.ip = ""
+        self.loc = ""
+        self.country = ""
+        self.org = ""
+        self.city = ""
+        self.hostname = ""
+        self.region = ""
+
 
     def printSelf(self):
-        for key,value in self.jsonData.iteritems():
-            print key
-            print value
+        #print self.jsonData
+        print "\t\t----------------------"
+        print "\t\tIP addr - " + self.ip
+        print "\t\tCountry - " + self.country
+        print "\t\tloc - " + self.loc
+        print "\t\torg - " + self.org
+        print "\t\tcity - " + self.city
+        print "\t\tregion - " + self.region
+        print "\t\thostname - " + self.hostname

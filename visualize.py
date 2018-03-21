@@ -27,9 +27,9 @@ def main():
 
 
     os.chdir("data")
-    map = Basemap(projection='lcc', resolution=None,
-            width=8E6, height=8E6,
-            lat_0=45, lon_0=-100,)
+    map = Basemap(projection='cyl', resolution=None,
+            llcrnrlat=-90, urcrnrlat=90,
+            llcrnrlon=-180, urcrnrlon=180, )
     map.etopo(scale=0.5, alpha=0.5)
     coordData = []
     for torrentData in os.listdir("."):

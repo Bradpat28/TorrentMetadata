@@ -21,8 +21,9 @@ PP = pprint.PrettyPrinter(indent=4)
 
 def ip_to_location(ip_addr):
     print 'http://ipinfo.io/' + ip_addr + "/json"
-    #ip_loc = requests.get('http://ipinfo.io/' + ip_addr + "/json").json()
+    ip_loc = requests.get('http://ipinfo.io/' + ip_addr + "/json").json()
     #NOT WORKING ON MY MACHINE!
+    """
     data = {'ip': '8.8.8.8',
           "hostname": 'google-public-dns-a.google.com',
           'loc': '37.385999999999996,-122.0838',
@@ -32,8 +33,9 @@ def ip_to_location(ip_addr):
           'country': 'US',
           'phone': 650}
     json_data = json.dumps(data)
+    """
     #return json_data
-    return json_data
+    return ip_loc#json_data
 
 def dns_resolve(hostname):
     try:
@@ -87,16 +89,17 @@ def getPeerData(torrentFileName):
                 search_ip = str(peer.ip).split("'")[1]
                 jsonData = ip_to_location(search_ip)
                 if jsonData != None:
+                    print jsonData
                     print "Saved Data"
                     peerClass = PeerInfoClass()
-                    info = json.loads(jsonData)
+                    info = jsonData#json.loads(jsonData)
                     peerClass.jsonData = jsonData
                     peerClass.loc = info['loc']
                     peerClass.country = info['country']
                     peerClass.org = info['org']
                     peerClass.ip = search_ip
                     peerClass.region = info['region']
-                    peerClass.hostname = info['hostname']
+                    #peerClass.hostname = info['hostname']
                     peerClass.city = info['city']
                     peerList.append(peerClass)
                     ipList.append(peer.ip[0])
@@ -113,15 +116,15 @@ def getPeerData(torrentFileName):
 
 
 def main():
-    os.chdir("testDir")
+    os.chdir("Torrents")
     torrentClassList = []
     for torrent in os.listdir("."):
         print("Getting Metadata for torrent file: " + torrent)
-        #try:
-        data = tp.parse_torrent_file(torrent)
-        torrentClassList.append(TorrentInfoClass(torrent, analyze_data(data, torrent)))
-        #except:
-            #print "Bad Torrent File " + torrent
+        try:
+            data = tp.parse_torrent_file(torrent)
+            torrentClassList.append(TorrentInfoClass(torrent, analyze_data(data, torrent)))
+        except:
+            print "Bad Torrent File " + torrent
 
     os.chdir("..")
     tempDir = glob.glob("./data")

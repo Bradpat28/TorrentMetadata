@@ -19,7 +19,6 @@ class TrackerInfoClass:
         self.hostName = hostName
         self.jsonData = jsonData
         self.peers = peers
-        self
 
     def printSelf(self):
         print "\thostname = " + self.hostName

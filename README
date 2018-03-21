@@ -14,3 +14,4 @@ Installation:
    9. source ~/.bash_profile
    10. install https://sourceforge.net/projects/matplotlib/files/matplotlib-toolkits/
    11. python setup.py install (from untarred basemap dir)
+   12. pip install pandas

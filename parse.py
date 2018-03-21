@@ -21,7 +21,7 @@ PP = pprint.PrettyPrinter(indent=4)
 
 def ip_to_location(ip_addr):
     print 'http://ipinfo.io/' + ip_addr + "/json"
-    ip_loc = requests.get('http://ipinfo.io/' + ip_addr + "/json").json()
+    ip_loc = requests.get('http://ipinfo.io/' + ip_addr + "/json?token=63b3970ce0077f").json()
     #NOT WORKING ON MY MACHINE!
     """
     data = {'ip': '8.8.8.8',
